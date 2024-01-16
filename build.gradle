@@ -1,46 +1,77 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.0'
-	id 'io.spring.dependency-management' version '1.1.4'
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.microsoft.azure.azurewebapp' version '1.1.0'
 }
 
 group = 'thamco'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '17'
+    sourceCompatibility = '17'
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('springCloudAzureVersion', "5.7.0")
+    set('springCloudAzureVersion', "5.7.0")
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.azure.spring:spring-cloud-azure-starter'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'com.azure.spring:spring-cloud-azure-starter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Hibernate and Jakarta Persistence
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    
+    // implementation 'org.hibernate:hibernate-core:6.3.1.Final'
+    // implementation 'com.enigmabridge:hibernate4-sqlite-dialect:0.1.2'
+    implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+    implementation 'org.hibernate.orm:hibernate-community-dialects:6.3.1.Final'
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+
+    // JUnit Jupiter dependencies
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+
+    // Mockito dependency
+    testImplementation 'org.mockito:mockito-core:3.12.4'
+
+
+}
+
+azurewebapp {
+    subscription = '5795d0f7-9d21-4c60-9130-06b5f2f3e555'
+    resourceGroup = 'thamco-group'
+    appName = 'thamco-product-api'
+    pricingTier = 'Free F1'
+    region = 'UK South'
+    runtime {
+        os = 'Windows'
+        webContainer = 'Java SE'
+        javaVersion = "Java 17"
+    }
 }
 
 dependencyManagement {
-	imports {
-		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:${springCloudAzureVersion}"
-	}
+    imports {
+        mavenBom "com.azure.spring:spring-cloud-azure-dependencies:${springCloudAzureVersion}"
+    }
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
