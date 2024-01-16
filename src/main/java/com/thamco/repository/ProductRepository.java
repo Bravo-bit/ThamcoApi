@@ -12,7 +12,7 @@ import com.thamco.models.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     String listProducts = "SELECT p.product_id, p.product_ean,\r\n" + //
-            "                    p.category_id,\r\n" + //
+            "                    p.category_id,\r\n" + //1
             "                    p.brand_id,\r\n" + //
             "                    p.product_name,\r\n" + //
             "                    p.product_description,\r\n" + //
